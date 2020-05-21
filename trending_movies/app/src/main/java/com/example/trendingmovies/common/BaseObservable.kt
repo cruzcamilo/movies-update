@@ -9,9 +9,7 @@ abstract class BaseObservable<LISTENER_CLASS> {
         Collections.newSetFromMap(
             ConcurrentHashMap<LISTENER_CLASS, Boolean>(1)
         )
-    get() {
-        return Collections.unmodifiableSet(field)
-    }
+
 
     final fun registerListener(listener: LISTENER_CLASS){
         mListeners.add(listener)
@@ -19,6 +17,10 @@ abstract class BaseObservable<LISTENER_CLASS> {
 
     final fun unRegisterListener(listener: LISTENER_CLASS){
         mListeners.remove(listener)
+    }
+
+    fun getListeners(): MutableSet<LISTENER_CLASS> {
+        return Collections.unmodifiableSet(mListeners)
     }
 
 }

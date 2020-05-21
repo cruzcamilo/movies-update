@@ -1,4 +1,13 @@
 package com.example.trendingmovies.screens.movielist
 
-interface MovieListViewMvc {
+import com.example.trendingmovies.movies.Movie
+import com.example.trendingmovies.screens.mvcviews.ObservableViewMvc
+
+interface MovieListViewMvc: ObservableViewMvc<MovieListViewMvc.Listener> {
+
+    interface Listener {
+        fun onMovieClicked(movie: Movie)
+    }
+
+    fun bindMovie(movie: Movie): List<Movie>
 }

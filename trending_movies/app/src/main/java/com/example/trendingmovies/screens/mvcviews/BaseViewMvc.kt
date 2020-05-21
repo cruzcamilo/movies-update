@@ -2,17 +2,26 @@ package com.example.trendingmovies.screens.mvcviews
 
 import android.content.Context
 import android.view.View
+import androidx.annotation.IdRes
 
 abstract class BaseViewMvc<ListenerType>: ObservableViewMvc<ListenerType> {
 
-    lateinit var mRootview:View
+    private lateinit var mRootView:View
+
+    fun setRootView(view: View) {
+        mRootView = view
+    }
 
     override fun getRootView(): View {
-        return mRootview
+        return mRootView
     }
 
     protected fun getContext(): Context {
         return getRootView().context
+    }
+
+    protected open fun <T : View> findViewById(@IdRes id: Int): T {
+        return mRootView.findViewById(id)
     }
 
 }
