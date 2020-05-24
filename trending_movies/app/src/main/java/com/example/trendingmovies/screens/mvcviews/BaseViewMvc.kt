@@ -3,8 +3,10 @@ package com.example.trendingmovies.screens.mvcviews
 import android.content.Context
 import android.view.View
 import androidx.annotation.IdRes
+import com.example.trendingmovies.common.BaseObservable
 
-abstract class BaseViewMvc<ListenerType>: ObservableViewMvc<ListenerType> {
+abstract class BaseViewMvc<ListenerType>: BaseObservable<ListenerType>(),
+    ObservableViewMvc<ListenerType> {
 
     private lateinit var mRootView:View
 

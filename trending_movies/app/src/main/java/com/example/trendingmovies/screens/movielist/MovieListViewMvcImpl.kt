@@ -13,25 +13,19 @@ import com.example.trendingmovies.screens.mvcviews.BaseViewMvc
 class MovieListViewMvcImpl(inflater: LayoutInflater, container: ViewGroup?) :
     BaseViewMvc<MovieListViewMvc.Listener>(), MovieListViewMvc {
 
-    private val gridView: GridView = findViewById(R.id.gridview)
-    private val emptyTextview: TextView = findViewById(R.id.tv_empty)
+    private val gridView: GridView
+    private val emptyTextview: TextView
 
     init {
         setRootView(inflater.inflate(R.layout.activity_movie_list, container, false))
+        gridView = findViewById(R.id.gridview)
+        emptyTextview = findViewById(R.id.tv_empty)
         gridView.emptyView = emptyTextview
     }
 
 
 
     override fun bindMovie(movie: Movie): List<Movie> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun registerListener(listener: MovieListViewMvc.Listener) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun unRegisterListener(listener: MovieListViewMvc.Listener) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

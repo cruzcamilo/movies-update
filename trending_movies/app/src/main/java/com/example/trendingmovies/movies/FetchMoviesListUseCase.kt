@@ -1,6 +1,5 @@
 package com.example.trendingmovies.movies
 
-import androidx.annotation.Nullable
 import com.example.trendingmovies.BuildConfig
 import com.example.trendingmovies.Constants
 import com.example.trendingmovies.common.BaseObservable
@@ -22,28 +21,27 @@ class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() 
     }
 
     private val mMovieDbApi:MovieDbApi
-    @Nullable lateinit var mCall: Call<MovieListResponseSchema>
-    private val okHttpClient = OkHttpClient()
+    var mCall: Call<MovieListResponseSchema>? = null
+    private lateinit var okHttpClient: OkHttpClient
+
     private val API_KEY = BuildConfig.API_KEY
 
-    private fun setOkHttpClient(){
-        okHttpClient.newBuilder().addInterceptor {chain ->
+    private fun getOkHttpClient(): OkHttpClient{
+        okHttpClient = OkHttpClient()
+        return okHttpClient.newBuilder().addInterceptor{ chain ->
             val original = chain.request()
             val httpUrl = original.url()
             val newHttpUrl = httpUrl.newBuilder().addQueryParameter("api_key", API_KEY).build()
             val requestBuilder = original.newBuilder().url(newHttpUrl)
             val request = requestBuilder.build()
-
             chain.proceed(request)
-        }
-            .build()
+        }.build()
     }
 
     init{
-        setOkHttpClient()
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .client(okHttpClient)
+            .client(getOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -53,8 +51,7 @@ class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() 
     fun fetchLastMoviesAndNotify(){
         cancelCurrentFetchIfActive()
         mCall = mMovieDbApi.popularMoviesList()
-
-        mCall.enqueue(object : Callback<MovieListResponseSchema> {
+        mCall?.enqueue(object : Callback<MovieListResponseSchema> {
             override fun onResponse(
                 call: Call<MovieListResponseSchema>,
                 response: Response<MovieListResponseSchema>
@@ -74,8 +71,8 @@ class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() 
     }
 
     private fun cancelCurrentFetchIfActive() {
-        if (mCall != null && !mCall.isCanceled && !mCall.isExecuted) {
-            mCall.cancel()
+        if (mCall != null && !mCall!!.isCanceled && !mCall!!.isExecuted) {
+            mCall!!.cancel()
         }
     }
 
