@@ -9,5 +9,5 @@ interface MovieListViewMvc: ObservableViewMvc<MovieListViewMvc.Listener> {
         fun onMovieClicked(movie: Movie)
     }
 
-    fun bindMovie(movie: Movie): List<Movie>
+    fun bindMovies(movies: List<Movie>)
 }

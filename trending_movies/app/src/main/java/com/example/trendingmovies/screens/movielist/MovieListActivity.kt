@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.movies.Movie
+import com.example.trendingmovies.screens.moviedetails.MovieDetailsActivity
 
 class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
     FetchMoviesListUseCase.Listener {
@@ -33,15 +34,15 @@ class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
         mFetchMoviesListUseCase.unRegisterListener(this)
     }
 
-    override fun onMovieClicked(movie: Movie) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onFetchOfMovieSucceeded(movies: List<Movie>) {
+        mViewMvc.bindMovies(movies)
     }
 
-    override fun onFetchOfMovieSucceded(movies: List<Movie>) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onMovieClicked(movie: Movie) {
+        MovieDetailsActivity.start(this@MovieListActivity, movie.id)
     }
 
     override fun onFetchOfMovieFailed() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //TODO("not implemented")
     }
 }

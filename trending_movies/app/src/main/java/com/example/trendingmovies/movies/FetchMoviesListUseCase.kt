@@ -16,7 +16,7 @@ import java.util.*
 class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() {
 
     interface Listener{
-        fun onFetchOfMovieSucceded(movies: List<Movie>)
+        fun onFetchOfMovieSucceeded(movies: List<Movie>)
         fun onFetchOfMovieFailed()
     }
 
@@ -66,7 +66,6 @@ class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() 
             override fun onFailure(call: Call<MovieListResponseSchema>, t: Throwable) {
                 notifyFailed()
             }
-
         })
     }
 
@@ -80,7 +79,7 @@ class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() 
         val unmodifiableQuestions: List<Movie> =
             Collections.unmodifiableList<Movie>(questions)
         for (listener in getListeners()) {
-            listener.onFetchOfMovieSucceded(unmodifiableQuestions)
+            listener.onFetchOfMovieSucceeded(unmodifiableQuestions)
         }
     }
 
