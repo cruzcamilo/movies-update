@@ -9,6 +9,10 @@ import com.example.trendingmovies.R
 
 class MovieDetailsActivity : AppCompatActivity() {
 
+    private val mMovieId: String? by lazy{
+        intent.extras?.getString(EXTRA_QUESTION_ID)
+    }
+
     companion object {
         const val EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID"
 
@@ -23,7 +27,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
 
-        Toast.makeText(this, intent.extras?.getString(EXTRA_QUESTION_ID), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, mMovieId, Toast.LENGTH_SHORT).show();
     }
 
 }
