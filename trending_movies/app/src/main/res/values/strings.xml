@@ -7,4 +7,7 @@
     <string name="release_date_label">Released in:</string>
     <string name="synopsis_label">Synopsis</string>
 
+    <string name="no_title">Title not found</string>
+    <string name="no_date">Date not found</string>
+
 </resources>

@@ -39,7 +39,7 @@ class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
     }
 
     override fun onMovieClicked(movie: Movie) {
-        MovieDetailsActivity.start(this@MovieListActivity, movie.id)
+        MovieDetailsActivity.start(this@MovieListActivity, movie.id.toInt())
     }
 
     override fun onFetchOfMovieFailed() {

@@ -1,28 +1,25 @@
 package com.example.trendingmovies.movies
 
-import androidx.annotation.Nullable
 import com.example.trendingmovies.BuildConfig
 import com.example.trendingmovies.Constants
 import com.example.trendingmovies.common.BaseObservable
 import com.example.trendingmovies.networking.MovieDbApi
-import com.example.trendingmovies.networking.MovieListResponseSchema
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 
-class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() {
+class FetchMoviesDetailsUseCase: BaseObservable<FetchMoviesDetailsUseCase.Listener>() {
 
     interface Listener{
-        fun onFetchOfMovieSucceeded(movies: List<Movie>)
+        fun onFetchOfMovieSucceeded(movie: MovieWithDetails)
         fun onFetchOfMovieFailed()
     }
 
     private val mMovieDbApi:MovieDbApi
-    private var mCall: Call<MovieListResponseSchema>? = null
+    private var mCall : Call<MovieWithDetails>? = null
     private lateinit var okHttpClient: OkHttpClient
 
     private val API_KEY = BuildConfig.API_KEY
@@ -49,22 +46,20 @@ class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() 
         mMovieDbApi = retrofit.create(MovieDbApi::class.java)
     }
 
-    fun fetchLastMoviesAndNotify(){
+    fun fetchLastMoviesAndNotify(movieId: Int){
         cancelCurrentFetchIfActive()
-        mCall = mMovieDbApi.popularMoviesList()
-        mCall?.enqueue(object : Callback<MovieListResponseSchema> {
+        mCall = mMovieDbApi.movieDetails(movieId)
+        mCall?.enqueue(object : Callback<MovieWithDetails> {
             override fun onResponse(
-                call: Call<MovieListResponseSchema>,
-                response: Response<MovieListResponseSchema>
+                call: Call<MovieWithDetails>,
+                response: Response<MovieWithDetails>
             ) {
-                if(response.isSuccessful){
-                    notifySucceeded(response.body()!!.getMovies())
-                } else {
-                    notifyFailed()
+                if (response.isSuccessful){
+                    notifySucceeded(response.body()!!)
                 }
             }
 
-            override fun onFailure(call: Call<MovieListResponseSchema>, t: Throwable) {
+            override fun onFailure(call: Call<MovieWithDetails>, t: Throwable) {
                 notifyFailed()
             }
         })
@@ -72,15 +67,13 @@ class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() 
 
     private fun cancelCurrentFetchIfActive() {
         if (mCall != null && !mCall!!.isCanceled && !mCall!!.isExecuted) {
-            mCall!!.cancel()
+            mCall?.cancel()
         }
     }
 
-    private fun notifySucceeded(questions: List<Movie>) {
-        val unmodifiableQuestions: List<Movie> =
-            Collections.unmodifiableList<Movie>(questions)
+    private fun notifySucceeded(movie: MovieWithDetails) {
         for (listener in getListeners()) {
-            listener.onFetchOfMovieSucceeded(unmodifiableQuestions)
+            listener.onFetchOfMovieSucceeded(movie)
         }
     }
 
@@ -89,5 +82,4 @@ class FetchMoviesListUseCase: BaseObservable<FetchMoviesListUseCase.Listener>() 
             listener.onFetchOfMovieFailed()
         }
     }
-
 }

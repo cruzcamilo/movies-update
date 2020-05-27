@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.trendingmovies.Constants.IMAGE_BASE_URL
 import com.example.trendingmovies.R
 import com.example.trendingmovies.movies.Movie
 import com.example.trendingmovies.screens.mvcviews.BaseViewMvc
@@ -79,10 +80,8 @@ class MovieListViewMvcImpl(inflater: LayoutInflater, container: ViewGroup?) :
 
             }
 
-            val URL = "https://image.tmdb.org/t/p/w185" + mMovieList[position].thumbnail
-
             Glide.with(holder.itemView.context)
-                .load(URL)
+                .load(IMAGE_BASE_URL + mMovieList[position].thumbnail)
                 .apply(RequestOptions()
                     .override(540, 840)
                     .centerCrop())
