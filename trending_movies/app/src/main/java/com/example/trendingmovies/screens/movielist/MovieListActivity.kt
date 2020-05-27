@@ -6,11 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingmovies.MyApplication
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.movies.Movie
+import com.example.trendingmovies.screens.common.activities.BaseActivity
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
 import com.example.trendingmovies.screens.moviedetails.MovieDetailsActivity
 
-class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
+class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
     FetchMoviesListUseCase.Listener {
 
     private lateinit var mViewMvc: MovieListViewMvc
@@ -20,7 +21,7 @@ class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewMvc = MovieListViewMvcImpl(LayoutInflater.from(this), null)
-        mFetchMoviesListUseCase = (application as MyApplication).getFetchMovieListUseCase()
+        mFetchMoviesListUseCase = getCompositionRoot().getFetchMovieListUseCase()
         mDialogsManager = DialogsManager(supportFragmentManager)
         setContentView(mViewMvc.getRootView())
     }

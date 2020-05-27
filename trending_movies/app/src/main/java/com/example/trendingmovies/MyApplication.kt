@@ -2,6 +2,7 @@ package com.example.trendingmovies
 
 import android.app.Application
 import androidx.annotation.UiThread
+import com.example.trendingmovies.common.dependencyinjection.CompositionRoot
 import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.networking.MovieDbApi
@@ -11,49 +12,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MyApplication: Application() {
 
-    private lateinit var okHttpClient: OkHttpClient
-    private var mRetrofit: Retrofit? = null
-    private var mMovieDbApi:MovieDbApi? = null
+    private lateinit var mCompositionRoot: CompositionRoot
 
-    private fun getOkHttpClient(): OkHttpClient{
-        okHttpClient = OkHttpClient()
-        return okHttpClient.newBuilder().addInterceptor{ chain ->
-            val original = chain.request()
-            val httpUrl = original.url()
-            val newHttpUrl = httpUrl.newBuilder().addQueryParameter("api_key", Constants.API_KEY).build()
-            val requestBuilder = original.newBuilder().url(newHttpUrl)
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }.build()
+    override fun onCreate() {
+        super.onCreate()
+        mCompositionRoot = CompositionRoot()
     }
 
-    @UiThread
-    fun getRetrofit(): Retrofit {
-        if (mRetrofit == null){
-            mRetrofit =  Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .client(getOkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        return mRetrofit!!
-    }
-
-    @UiThread
-    fun getMovieDbApi(): MovieDbApi{
-        if(mMovieDbApi == null){
-            mMovieDbApi = getRetrofit().create(MovieDbApi::class.java)
-        }
-        return mMovieDbApi!!
-    }
-
-    @UiThread
-    fun getFetchMovieListUseCase():FetchMoviesListUseCase {
-        return FetchMoviesListUseCase(getMovieDbApi())
-    }
-
-    @UiThread
-    fun getFetchMovieDetailsUseCase():FetchMovieDetailsUseCase{
-        return FetchMovieDetailsUseCase(getMovieDbApi())
+    fun getCompositionRoot(): CompositionRoot{
+        return mCompositionRoot
     }
 }

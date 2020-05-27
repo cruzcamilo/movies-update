@@ -4,14 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
-import com.example.trendingmovies.MyApplication
 import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.MovieWithDetails
+import com.example.trendingmovies.screens.common.activities.BaseActivity
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
 
-class MovieDetailsActivity : AppCompatActivity(), MovieDetailsViewMvc.Listener,
+class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
     FetchMovieDetailsUseCase.Listener {
 
     private val mMovieId: Int by lazy {
@@ -35,7 +34,7 @@ class MovieDetailsActivity : AppCompatActivity(), MovieDetailsViewMvc.Listener,
         super.onCreate(savedInstanceState)
         mViewMvc = MovieDetailsViewMvcImpl(LayoutInflater.from(this), null)
         setContentView(mViewMvc.getRootView())
-        mFetchMovieDetailsUseCaseUseCase = (application as MyApplication).getFetchMovieDetailsUseCase()
+        mFetchMovieDetailsUseCaseUseCase = getCompositionRoot().getFetchMovieDetailsUseCase()
         mDialogsManager = DialogsManager(supportFragmentManager)
     }
 
