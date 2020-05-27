@@ -3,6 +3,7 @@ package com.example.trendingmovies.screens.movielist
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trendingmovies.MyApplication
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.movies.Movie
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
@@ -14,13 +15,13 @@ class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
 
     private lateinit var mViewMvc: MovieListViewMvc
     private lateinit var mDialogsManager: DialogsManager
-    private val mFetchMoviesListUseCase by lazy {
-        FetchMoviesListUseCase()
-    }
+    private lateinit var mFetchMoviesListUseCase: FetchMoviesListUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewMvc = MovieListViewMvcImpl(LayoutInflater.from(this), null)
+        val movieDbApi = (application as MyApplication).getMovieDbApi()
+        mFetchMoviesListUseCase = FetchMoviesListUseCase(movieDbApi)
         mDialogsManager = DialogsManager(supportFragmentManager)
         setContentView(mViewMvc.getRootView())
     }

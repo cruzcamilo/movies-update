@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trendingmovies.MyApplication
 import com.example.trendingmovies.movies.FetchMoviesDetailsUseCase
 import com.example.trendingmovies.movies.MovieWithDetails
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
@@ -34,7 +35,8 @@ class MovieDetailsActivity : AppCompatActivity(), MovieDetailsViewMvc.Listener,
         super.onCreate(savedInstanceState)
         mViewMvc = MovieDetailsViewMvcImpl(LayoutInflater.from(this), null)
         setContentView(mViewMvc.getRootView())
-        mFetchMovieDetailsUseCaseUseCase = FetchMoviesDetailsUseCase()
+        val movieDbApi = (application as MyApplication).getMovieDbApi()
+        mFetchMovieDetailsUseCaseUseCase = FetchMoviesDetailsUseCase(movieDbApi)
         mDialogsManager = DialogsManager(supportFragmentManager)
     }
 
