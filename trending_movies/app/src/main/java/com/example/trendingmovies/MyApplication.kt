@@ -2,6 +2,8 @@ package com.example.trendingmovies
 
 import android.app.Application
 import androidx.annotation.UiThread
+import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
+import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.networking.MovieDbApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -43,5 +45,15 @@ class MyApplication: Application() {
             mMovieDbApi = getRetrofit().create(MovieDbApi::class.java)
         }
         return mMovieDbApi!!
+    }
+
+    @UiThread
+    fun getFetchMovieListUseCase():FetchMoviesListUseCase {
+        return FetchMoviesListUseCase(getMovieDbApi())
+    }
+
+    @UiThread
+    fun getFetchMovieDetailsUseCase():FetchMovieDetailsUseCase{
+        return FetchMovieDetailsUseCase(getMovieDbApi())
     }
 }

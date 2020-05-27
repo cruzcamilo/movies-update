@@ -1,17 +1,11 @@
 package com.example.trendingmovies.movies
 
-import androidx.annotation.Nullable
-import com.example.trendingmovies.BuildConfig
-import com.example.trendingmovies.Constants
 import com.example.trendingmovies.common.BaseObservable
 import com.example.trendingmovies.networking.MovieDbApi
 import com.example.trendingmovies.networking.MovieListResponseSchema
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class FetchMoviesListUseCase(var movieDbApi: MovieDbApi): BaseObservable<FetchMoviesListUseCase.Listener>() {

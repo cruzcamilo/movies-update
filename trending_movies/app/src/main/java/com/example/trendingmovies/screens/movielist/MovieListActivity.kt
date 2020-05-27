@@ -20,8 +20,7 @@ class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewMvc = MovieListViewMvcImpl(LayoutInflater.from(this), null)
-        val movieDbApi = (application as MyApplication).getMovieDbApi()
-        mFetchMoviesListUseCase = FetchMoviesListUseCase(movieDbApi)
+        mFetchMoviesListUseCase = (application as MyApplication).getFetchMovieListUseCase()
         mDialogsManager = DialogsManager(supportFragmentManager)
         setContentView(mViewMvc.getRootView())
     }

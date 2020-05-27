@@ -1,17 +1,12 @@
 package com.example.trendingmovies.movies
 
-import com.example.trendingmovies.BuildConfig
-import com.example.trendingmovies.Constants
 import com.example.trendingmovies.common.BaseObservable
 import com.example.trendingmovies.networking.MovieDbApi
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class FetchMoviesDetailsUseCase(var movieDbApi: MovieDbApi): BaseObservable<FetchMoviesDetailsUseCase.Listener>() {
+class FetchMovieDetailsUseCase(var movieDbApi: MovieDbApi): BaseObservable<FetchMovieDetailsUseCase.Listener>() {
 
     interface Listener{
         fun onFetchOfMovieSucceeded(movie: MovieWithDetails)

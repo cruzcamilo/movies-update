@@ -6,20 +6,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingmovies.MyApplication
-import com.example.trendingmovies.movies.FetchMoviesDetailsUseCase
+import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.MovieWithDetails
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
 
 class MovieDetailsActivity : AppCompatActivity(), MovieDetailsViewMvc.Listener,
-    FetchMoviesDetailsUseCase.Listener {
+    FetchMovieDetailsUseCase.Listener {
 
     private val mMovieId: Int by lazy {
     intent.extras!!.getInt(MOVIE_ID)
     }
     private lateinit var mViewMvc: MovieDetailsViewMvc
     private lateinit var mDialogsManager: DialogsManager
-    private lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMoviesDetailsUseCase
+    private lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMovieDetailsUseCase
 
     companion object {
         const val MOVIE_ID = "EXTRA_QUESTION_ID"
@@ -35,8 +35,7 @@ class MovieDetailsActivity : AppCompatActivity(), MovieDetailsViewMvc.Listener,
         super.onCreate(savedInstanceState)
         mViewMvc = MovieDetailsViewMvcImpl(LayoutInflater.from(this), null)
         setContentView(mViewMvc.getRootView())
-        val movieDbApi = (application as MyApplication).getMovieDbApi()
-        mFetchMovieDetailsUseCaseUseCase = FetchMoviesDetailsUseCase(movieDbApi)
+        mFetchMovieDetailsUseCaseUseCase = (application as MyApplication).getFetchMovieDetailsUseCase()
         mDialogsManager = DialogsManager(supportFragmentManager)
     }
 
