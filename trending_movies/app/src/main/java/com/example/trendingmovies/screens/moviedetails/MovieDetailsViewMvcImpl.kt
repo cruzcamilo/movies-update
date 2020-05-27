@@ -8,7 +8,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.trendingmovies.Constants
 import com.example.trendingmovies.R
 import com.example.trendingmovies.movies.MovieWithDetails
-import com.example.trendingmovies.screens.mvcviews.BaseViewMvc
+import com.example.trendingmovies.screens.common.mvcviews.BaseViewMvc
 import kotlinx.android.synthetic.main.activity_movie_details.view.*
 
 class MovieDetailsViewMvcImpl (inflater: LayoutInflater, container: ViewGroup?):

@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.movies.Movie
+import com.example.trendingmovies.screens.common.dialogs.DialogsManager
+import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
 import com.example.trendingmovies.screens.moviedetails.MovieDetailsActivity
 
 class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
     FetchMoviesListUseCase.Listener {
 
     private lateinit var mViewMvc: MovieListViewMvc
+    private lateinit var mDialogsManager: DialogsManager
     private val mFetchMoviesListUseCase by lazy {
         FetchMoviesListUseCase()
     }
@@ -18,6 +21,7 @@ class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewMvc = MovieListViewMvcImpl(LayoutInflater.from(this), null)
+        mDialogsManager = DialogsManager(supportFragmentManager)
         setContentView(mViewMvc.getRootView())
     }
 
@@ -43,6 +47,6 @@ class MovieListActivity : AppCompatActivity(), MovieListViewMvc.Listener,
     }
 
     override fun onFetchOfMovieFailed() {
-        //TODO("not implemented")
+        mDialogsManager.showRetainedDialogWithId(ServerErrorDialogFragment.newInstance(), "")
     }
 }

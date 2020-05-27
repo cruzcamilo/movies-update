@@ -13,7 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.trendingmovies.Constants.IMAGE_BASE_URL
 import com.example.trendingmovies.R
 import com.example.trendingmovies.movies.Movie
-import com.example.trendingmovies.screens.mvcviews.BaseViewMvc
+import com.example.trendingmovies.screens.common.mvcviews.BaseViewMvc
 
 class MovieListViewMvcImpl(inflater: LayoutInflater, container: ViewGroup?) :
     BaseViewMvc<MovieListViewMvc.Listener>(), MovieListViewMvc {

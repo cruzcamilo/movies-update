@@ -9,5 +9,7 @@
 
     <string name="no_title">Title not found</string>
     <string name="no_date">Date not found</string>
+    <string name="server_error">Server Error</string>
+    <string name="server_error_message">Communication with the server failed</string>
 
 </resources>

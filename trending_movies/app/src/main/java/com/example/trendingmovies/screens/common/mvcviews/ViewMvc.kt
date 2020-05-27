@@ -1,4 +1,4 @@
-package com.example.trendingmovies.screens.mvcviews
+package com.example.trendingmovies.screens.common.mvcviews
 
 import android.view.View
 

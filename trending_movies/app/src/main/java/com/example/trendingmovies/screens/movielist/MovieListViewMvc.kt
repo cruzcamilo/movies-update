@@ -1,7 +1,7 @@
 package com.example.trendingmovies.screens.movielist
 
 import com.example.trendingmovies.movies.Movie
-import com.example.trendingmovies.screens.mvcviews.ObservableViewMvc
+import com.example.trendingmovies.screens.common.mvcviews.ObservableViewMvc
 
 interface MovieListViewMvc: ObservableViewMvc<MovieListViewMvc.Listener> {
 

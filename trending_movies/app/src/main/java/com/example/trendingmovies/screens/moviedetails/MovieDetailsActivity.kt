@@ -7,13 +7,17 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingmovies.movies.FetchMoviesDetailsUseCase
 import com.example.trendingmovies.movies.MovieWithDetails
+import com.example.trendingmovies.screens.common.dialogs.DialogsManager
+import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
 
-class MovieDetailsActivity : AppCompatActivity(), FetchMoviesDetailsUseCase.Listener {
+class MovieDetailsActivity : AppCompatActivity(), MovieDetailsViewMvc.Listener,
+    FetchMoviesDetailsUseCase.Listener {
 
     private val mMovieId: Int by lazy {
     intent.extras!!.getInt(MOVIE_ID)
     }
     private lateinit var mViewMvc: MovieDetailsViewMvc
+    private lateinit var mDialogsManager: DialogsManager
     private lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMoviesDetailsUseCase
 
     companion object {
@@ -31,11 +35,12 @@ class MovieDetailsActivity : AppCompatActivity(), FetchMoviesDetailsUseCase.List
         mViewMvc = MovieDetailsViewMvcImpl(LayoutInflater.from(this), null)
         setContentView(mViewMvc.getRootView())
         mFetchMovieDetailsUseCaseUseCase = FetchMoviesDetailsUseCase()
+        mDialogsManager = DialogsManager(supportFragmentManager)
     }
 
     override fun onStart() {
         super.onStart()
-//        mViewMvc.registerListener(this)
+        mViewMvc.registerListener(this)
         mFetchMovieDetailsUseCaseUseCase.registerListener(this)
         mFetchMovieDetailsUseCaseUseCase.fetchLastMoviesAndNotify(mMovieId)
     }
@@ -45,6 +50,6 @@ class MovieDetailsActivity : AppCompatActivity(), FetchMoviesDetailsUseCase.List
     }
 
     override fun onFetchOfMovieFailed() {
-        //TODO("Not yet implemented")
+        mDialogsManager.showRetainedDialogWithId(ServerErrorDialogFragment.newInstance(), "")
     }
 }
