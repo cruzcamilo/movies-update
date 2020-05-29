@@ -35,7 +35,7 @@ class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
         mViewMvc = MovieDetailsViewMvcImpl(LayoutInflater.from(this), null)
         setContentView(mViewMvc.getRootView())
         mFetchMovieDetailsUseCaseUseCase = getCompositionRoot().getFetchMovieDetailsUseCase()
-        mDialogsManager = DialogsManager(supportFragmentManager)
+        mDialogsManager = getCompositionRoot().getDialogsManager()
     }
 
     override fun onStart() {

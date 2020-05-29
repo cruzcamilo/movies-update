@@ -2,8 +2,6 @@ package com.example.trendingmovies.screens.movielist
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AppCompatActivity
-import com.example.trendingmovies.MyApplication
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.movies.Movie
 import com.example.trendingmovies.screens.common.activities.BaseActivity
@@ -21,9 +19,9 @@ class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewMvc = MovieListViewMvcImpl(LayoutInflater.from(this), null)
-        mFetchMoviesListUseCase = getCompositionRoot().getFetchMovieListUseCase()
-        mDialogsManager = DialogsManager(supportFragmentManager)
         setContentView(mViewMvc.getRootView())
+        mFetchMoviesListUseCase = getCompositionRoot().getFetchMovieListUseCase()
+        mDialogsManager = getCompositionRoot().getDialogsManager()
     }
 
     override fun onStart() {
