@@ -1,5 +1,6 @@
 package com.example.trendingmovies.screens.common.activities
 
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingmovies.MyApplication
 import com.example.trendingmovies.common.dependencyinjection.CompositionRoot
@@ -7,20 +8,20 @@ import com.example.trendingmovies.common.dependencyinjection.PresentationComposi
 
 open class BaseActivity: AppCompatActivity() {
 
-    var mPresentationCompositionRoot: PresentationCompositionRoot? = null
+    private var mPresentationCompositionRoot: PresentationCompositionRoot? = null
 
     protected fun getCompositionRoot():PresentationCompositionRoot{
         if(mPresentationCompositionRoot == null){
             mPresentationCompositionRoot = PresentationCompositionRoot(
                 getAppCompositionRoot(),
-                supportFragmentManager
+                this
             )
-            return mPresentationCompositionRoot!!
         }
+
         return mPresentationCompositionRoot!!
     }
 
-    protected fun getAppCompositionRoot(): CompositionRoot{
+    private fun getAppCompositionRoot(): CompositionRoot{
         return (application as MyApplication).getCompositionRoot()
     }
 }

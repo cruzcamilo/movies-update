@@ -18,7 +18,7 @@ class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewMvc = MovieListViewMvcImpl(LayoutInflater.from(this), null)
+        mViewMvc = getCompositionRoot().getViewMvcFactory().newInstance(MovieListViewMvc::class, null)
         setContentView(mViewMvc.getRootView())
         mFetchMoviesListUseCase = getCompositionRoot().getFetchMovieListUseCase()
         mDialogsManager = getCompositionRoot().getDialogsManager()

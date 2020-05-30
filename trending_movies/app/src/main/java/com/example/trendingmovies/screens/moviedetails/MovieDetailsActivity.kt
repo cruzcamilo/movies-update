@@ -32,7 +32,7 @@ class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewMvc = MovieDetailsViewMvcImpl(LayoutInflater.from(this), null)
+        mViewMvc = getCompositionRoot().getViewMvcFactory().newInstance(MovieDetailsViewMvc::class, null)
         setContentView(mViewMvc.getRootView())
         mFetchMovieDetailsUseCaseUseCase = getCompositionRoot().getFetchMovieDetailsUseCase()
         mDialogsManager = getCompositionRoot().getDialogsManager()

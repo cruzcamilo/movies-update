@@ -13,37 +13,43 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.trendingmovies.Constants.IMAGE_BASE_URL
 import com.example.trendingmovies.R
 import com.example.trendingmovies.movies.Movie
+import com.example.trendingmovies.screens.common.ImageLoader
 import com.example.trendingmovies.screens.common.mvcviews.BaseViewMvc
 
-class MovieListViewMvcImpl(inflater: LayoutInflater, container: ViewGroup?) :
+class MovieListViewMvcImpl(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    val imageLoader: ImageLoader
+) :
     BaseViewMvc<MovieListViewMvc.Listener>(), MovieListViewMvc {
 
     private val recyclerView: RecyclerView
     private val emptyTextview: TextView
     private val mMoviesAdapter: MovieAdapter
     private val loadingSpinner: ProgressBar
+
     init {
         setRootView(inflater.inflate(R.layout.activity_movie_list, container, false))
         recyclerView = findViewById(R.id.recyclerview)
         emptyTextview = findViewById(R.id.tv_empty)
         loadingSpinner = findViewById(R.id.loading_spinner)
 
-        mMoviesAdapter = MovieAdapter(object : OnMovieClickListener{
+        mMoviesAdapter = MovieAdapter(object : OnMovieClickListener {
             override fun onMovieClicked(movie: Movie) {
-                for (listener: MovieListViewMvc.Listener in getListeners()){
+                for (listener: MovieListViewMvc.Listener in getListeners()) {
                     listener.onMovieClicked(movie)
                 }
             }
-        })
+        }, imageLoader)
 
 //        recyclerView.emptyView = emptyTextview
         recyclerView.adapter = mMoviesAdapter
-        recyclerView.layoutManager = GridLayoutManager(getContext(),2)
+        recyclerView.layoutManager = GridLayoutManager(getContext(), 2)
     }
 
     override fun bindMovies(movies: List<Movie>) {
         mMoviesAdapter.bindData(movies)
-        if (movies.isNotEmpty()){
+        if (movies.isNotEmpty()) {
             emptyTextview.visibility = View.GONE
             loadingSpinner.visibility = View.GONE
         }
@@ -53,7 +59,7 @@ class MovieListViewMvcImpl(inflater: LayoutInflater, container: ViewGroup?) :
         fun onMovieClicked(movie: Movie)
     }
 
-    class MovieAdapter(onMovieClickListener: OnMovieClickListener) :
+    class MovieAdapter(onMovieClickListener: OnMovieClickListener, val imageLoader: ImageLoader) :
         RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
         private var mOnMovieClickListener = onMovieClickListener
@@ -69,7 +75,8 @@ class MovieListViewMvcImpl(inflater: LayoutInflater, container: ViewGroup?) :
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_movie_list_item, parent, false)
+            val itemView = LayoutInflater.from(parent.context)
+                .inflate(R.layout.layout_movie_list_item, parent, false)
 
             return MovieViewHolder(itemView)
         }
@@ -79,15 +86,15 @@ class MovieListViewMvcImpl(inflater: LayoutInflater, container: ViewGroup?) :
                 mOnMovieClickListener.onMovieClicked(mMovieList[position])
 
             }
-
-            Glide.with(holder.itemView.context)
-                .load(IMAGE_BASE_URL + mMovieList[position].thumbnail)
-                .apply(RequestOptions()
-                    .override(540, 840)
-                    .centerCrop())
-                .into(holder.moviePoster)
+            imageLoader.loadImage(
+                IMAGE_BASE_URL + mMovieList[position].thumbnail,
+                imageLoader.getMoviePosterOptions(),
+                holder.moviePoster
+            )
         }
 
-        override fun getItemCount(): Int { return mMovieList.size }
+        override fun getItemCount(): Int {
+            return mMovieList.size
+        }
     }
 }
