@@ -3,6 +3,7 @@ package com.example.trendingmovies.screens.moviedetails
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import com.example.trendingmovies.common.dependencyinjection.Service
 import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.MovieWithDetails
 import com.example.trendingmovies.screens.common.activities.BaseActivity
@@ -16,10 +17,11 @@ class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
     private val mMovieId: Int by lazy {
     intent.extras!!.getInt(MOVIE_ID)
     }
-    lateinit var mViewMvc: MovieDetailsViewMvc
-    lateinit var mDialogsManager: DialogsManager
-    lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMovieDetailsUseCase
-    lateinit var mViewMvcFactory: ViewMvcFactory
+    @Service private lateinit var mDialogsManager: DialogsManager
+    @Service private lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMovieDetailsUseCase
+    @Service private lateinit var mViewMvcFactory: ViewMvcFactory
+
+    private lateinit var mViewMvc: MovieDetailsViewMvc
 
     companion object {
         const val MOVIE_ID = "EXTRA_QUESTION_ID"

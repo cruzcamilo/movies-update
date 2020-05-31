@@ -2,6 +2,7 @@ package com.example.trendingmovies.screens.movielist
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import com.example.trendingmovies.common.dependencyinjection.Service
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.movies.Movie
 import com.example.trendingmovies.screens.common.activities.BaseActivity
@@ -13,10 +14,11 @@ import com.example.trendingmovies.screens.moviedetails.MovieDetailsActivity
 class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
     FetchMoviesListUseCase.Listener {
 
-    lateinit var mViewMvc: MovieListViewMvc
-    lateinit var mDialogsManager: DialogsManager
-    lateinit var mFetchMoviesListUseCase: FetchMoviesListUseCase
-    lateinit var mViewMvcFactory: ViewMvcFactory
+    @Service private lateinit var mDialogsManager: DialogsManager
+    @Service private lateinit var mFetchMoviesListUseCase: FetchMoviesListUseCase
+    @Service private lateinit var mViewMvcFactory: ViewMvcFactory
+
+    private lateinit var mViewMvc: MovieListViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
