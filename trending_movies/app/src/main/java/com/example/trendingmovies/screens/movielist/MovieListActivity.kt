@@ -7,21 +7,24 @@ import com.example.trendingmovies.movies.Movie
 import com.example.trendingmovies.screens.common.activities.BaseActivity
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
+import com.example.trendingmovies.screens.common.mvcviews.ViewMvcFactory
 import com.example.trendingmovies.screens.moviedetails.MovieDetailsActivity
 
 class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
     FetchMoviesListUseCase.Listener {
 
-    private lateinit var mViewMvc: MovieListViewMvc
-    private lateinit var mDialogsManager: DialogsManager
-    private lateinit var mFetchMoviesListUseCase: FetchMoviesListUseCase
+    lateinit var mViewMvc: MovieListViewMvc
+    lateinit var mDialogsManager: DialogsManager
+    lateinit var mFetchMoviesListUseCase: FetchMoviesListUseCase
+    lateinit var mViewMvcFactory: ViewMvcFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewMvc = getCompositionRoot().getViewMvcFactory().newInstance(MovieListViewMvc::class, null)
+        getInjector().inject(this)
+
+        mViewMvc = mViewMvcFactory.newInstance(MovieListViewMvc::class, null)
+
         setContentView(mViewMvc.getRootView())
-        mFetchMoviesListUseCase = getCompositionRoot().getFetchMovieListUseCase()
-        mDialogsManager = getCompositionRoot().getDialogsManager()
     }
 
     override fun onStart() {

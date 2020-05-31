@@ -3,12 +3,12 @@ package com.example.trendingmovies.screens.moviedetails
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.MovieWithDetails
 import com.example.trendingmovies.screens.common.activities.BaseActivity
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
+import com.example.trendingmovies.screens.common.mvcviews.ViewMvcFactory
 
 class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
     FetchMovieDetailsUseCase.Listener {
@@ -16,9 +16,10 @@ class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
     private val mMovieId: Int by lazy {
     intent.extras!!.getInt(MOVIE_ID)
     }
-    private lateinit var mViewMvc: MovieDetailsViewMvc
-    private lateinit var mDialogsManager: DialogsManager
-    private lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMovieDetailsUseCase
+    lateinit var mViewMvc: MovieDetailsViewMvc
+    lateinit var mDialogsManager: DialogsManager
+    lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMovieDetailsUseCase
+    lateinit var mViewMvcFactory: ViewMvcFactory
 
     companion object {
         const val MOVIE_ID = "EXTRA_QUESTION_ID"
@@ -32,10 +33,9 @@ class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewMvc = getCompositionRoot().getViewMvcFactory().newInstance(MovieDetailsViewMvc::class, null)
+        getInjector().inject(this)
+        mViewMvc = mViewMvcFactory.newInstance(MovieDetailsViewMvc::class, null)
         setContentView(mViewMvc.getRootView())
-        mFetchMovieDetailsUseCaseUseCase = getCompositionRoot().getFetchMovieDetailsUseCase()
-        mDialogsManager = getCompositionRoot().getDialogsManager()
     }
 
     override fun onStart() {
