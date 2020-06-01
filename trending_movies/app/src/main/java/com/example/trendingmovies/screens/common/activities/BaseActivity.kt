@@ -1,16 +1,14 @@
 package com.example.trendingmovies.screens.common.activities
 
-import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingmovies.MyApplication
 import com.example.trendingmovies.common.dependencyinjection.CompositionRoot
 import com.example.trendingmovies.common.dependencyinjection.Injector
 import com.example.trendingmovies.common.dependencyinjection.PresentationCompositionRoot
-import java.lang.RuntimeException
+import com.example.trendingmovies.common.dependencyinjection.application.ApplicationComponent
 
 open class BaseActivity: AppCompatActivity() {
 
-    private var mPresentationCompositionRoot: PresentationCompositionRoot? = null
     private var mIsInjectionUsed = false
 
     fun getInjector(): Injector{
@@ -22,17 +20,10 @@ open class BaseActivity: AppCompatActivity() {
     }
 
     private fun getCompositionRoot():PresentationCompositionRoot{
-        if(mPresentationCompositionRoot == null){
-            mPresentationCompositionRoot = PresentationCompositionRoot(
-                getAppCompositionRoot(),
-                this
-            )
-        }
-
-        return mPresentationCompositionRoot!!
+        return PresentationCompositionRoot(getApplicationComponent(), this)
     }
 
-    private fun getAppCompositionRoot(): CompositionRoot{
-        return (application as MyApplication).getCompositionRoot()
+    private fun getApplicationComponent(): ApplicationComponent{
+        return (application as MyApplication).getApplicationComponent()
     }
 }

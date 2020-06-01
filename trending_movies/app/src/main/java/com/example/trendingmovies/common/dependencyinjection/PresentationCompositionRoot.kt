@@ -3,6 +3,7 @@ package com.example.trendingmovies.common.dependencyinjection
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import com.example.trendingmovies.common.dependencyinjection.application.ApplicationComponent
 import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.screens.common.ImageLoader
@@ -10,7 +11,7 @@ import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.mvcviews.ViewMvcFactory
 
 class PresentationCompositionRoot(
-    val compositionRoot: CompositionRoot,
+    val applicationComponent: ApplicationComponent,
     val activity: AppCompatActivity
 ) {
 
@@ -23,11 +24,11 @@ class PresentationCompositionRoot(
     }
 
     fun getFetchMovieDetailsUseCase(): FetchMovieDetailsUseCase {
-        return compositionRoot.getFetchMovieDetailsUseCase()
+        return applicationComponent.getFetchMoviesDetailsUseCase()
     }
 
     fun getFetchMovieListUseCase(): FetchMoviesListUseCase {
-        return compositionRoot.getFetchMovieListUseCase()
+        return applicationComponent.getFetchMoviesListUseCase()
     }
 
     fun getViewMvcFactory(): ViewMvcFactory{
