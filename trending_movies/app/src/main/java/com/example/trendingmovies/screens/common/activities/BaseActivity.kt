@@ -3,7 +3,6 @@ package com.example.trendingmovies.screens.common.activities
 import androidx.appcompat.app.AppCompatActivity
 import com.example.trendingmovies.MyApplication
 import com.example.trendingmovies.common.dependencyinjection.application.ApplicationComponent
-import com.example.trendingmovies.common.dependencyinjection.presentation.DaggerPresentationComponent
 import com.example.trendingmovies.common.dependencyinjection.presentation.PresentationComponent
 import com.example.trendingmovies.common.dependencyinjection.presentation.PresentationModule
 
@@ -16,10 +15,7 @@ open class BaseActivity: AppCompatActivity() {
             throw RuntimeException("There is no need to use injector more than use")
         }
         mIsInjectionUsed = true
-        return DaggerPresentationComponent.builder()
-            .presentationModule(PresentationModule(this))
-            .applicationComponent(getApplicationComponent())
-            .build()
+        return getApplicationComponent().newPresentationComponent(PresentationModule(this))
     }
 
     private fun getApplicationComponent(): ApplicationComponent{

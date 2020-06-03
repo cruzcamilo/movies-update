@@ -51,9 +51,4 @@ class ApplicationModule {
     fun getFetchMovieListUseCase(movieDbApi: MovieDbApi): FetchMoviesListUseCase {
         return FetchMoviesListUseCase(movieDbApi)
     }
-
-    @Provides
-    fun getFetchMovieDetailsUseCase(movieDbApi: MovieDbApi): FetchMovieDetailsUseCase {
-        return FetchMovieDetailsUseCase(movieDbApi)
-    }
 }

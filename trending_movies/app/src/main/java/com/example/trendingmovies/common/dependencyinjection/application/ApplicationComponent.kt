@@ -1,13 +1,12 @@
 package com.example.trendingmovies.common.dependencyinjection.application
 
-import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
-import com.example.trendingmovies.movies.FetchMoviesListUseCase
+import com.example.trendingmovies.common.dependencyinjection.presentation.PresentationComponent
+import com.example.trendingmovies.common.dependencyinjection.presentation.PresentationModule
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [ApplicationModule::class])
 interface ApplicationComponent {
-    fun getFetchMoviesListUseCase(): FetchMoviesListUseCase
-    fun getFetchMoviesDetailsUseCase(): FetchMovieDetailsUseCase
+    fun newPresentationComponent(presentationModule: PresentationModule): PresentationComponent
 }
