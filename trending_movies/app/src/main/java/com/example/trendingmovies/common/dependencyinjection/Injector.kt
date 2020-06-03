@@ -1,12 +1,13 @@
 package com.example.trendingmovies.common.dependencyinjection
 
+import com.example.trendingmovies.common.dependencyinjection.presentation.PresentationComponent
 import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.mvcviews.ViewMvcFactory
 import java.lang.reflect.Field
 
-class Injector(private val mPresentationCompositionRoot: PresentationCompositionRoot) {
+class Injector(private val mPresentationComponent: PresentationComponent) {
 
     fun inject(client: Any){
         val clazz: Class<*> = client.javaClass
@@ -45,16 +46,16 @@ class Injector(private val mPresentationCompositionRoot: PresentationComposition
     private fun getServiceForClass(type: Class<*>): Any? {
         return when (type) {
             DialogsManager::class.java -> {
-                mPresentationCompositionRoot.getDialogsManager()
+                mPresentationComponent.getDialogsManager()
             }
             ViewMvcFactory::class.java -> {
-                mPresentationCompositionRoot.getViewMvcFactory()
+                mPresentationComponent.getViewMvcFactory()
             }
             FetchMoviesListUseCase::class.java -> {
-                mPresentationCompositionRoot.getFetchMovieListUseCase()
+                mPresentationComponent.getFetchMoviesListUseCase()
             }
             FetchMovieDetailsUseCase::class.java -> {
-                mPresentationCompositionRoot.getFetchMovieDetailsUseCase()
+                mPresentationComponent.getFetchMoviesDetailsUseCase()
             }
             else -> {
                 throw java.lang.RuntimeException("unsupported service type class: $type")

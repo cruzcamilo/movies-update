@@ -6,6 +6,9 @@ import com.example.trendingmovies.common.dependencyinjection.CompositionRoot
 import com.example.trendingmovies.common.dependencyinjection.Injector
 import com.example.trendingmovies.common.dependencyinjection.PresentationCompositionRoot
 import com.example.trendingmovies.common.dependencyinjection.application.ApplicationComponent
+import com.example.trendingmovies.common.dependencyinjection.presentation.DaggerPresentationComponent
+import com.example.trendingmovies.common.dependencyinjection.presentation.PresentationComponent
+import com.example.trendingmovies.common.dependencyinjection.presentation.PresentationModule
 
 open class BaseActivity: AppCompatActivity() {
 
@@ -16,11 +19,13 @@ open class BaseActivity: AppCompatActivity() {
             throw RuntimeException("There is no need to use injector more than use")
         }
         mIsInjectionUsed = true
-        return Injector(getCompositionRoot())
+        return Injector(getPresentationComponent())
     }
 
-    private fun getCompositionRoot():PresentationCompositionRoot{
-        return PresentationCompositionRoot(getApplicationComponent(), this)
+    private fun getPresentationComponent(): PresentationComponent {
+        return DaggerPresentationComponent.builder()
+            .presentationModule(PresentationModule(this, getApplicationComponent()))
+            .build()
     }
 
     private fun getApplicationComponent(): ApplicationComponent{
