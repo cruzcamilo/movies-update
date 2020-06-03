@@ -14,39 +14,6 @@ import javax.inject.Singleton
 @Module
 class ApplicationModule {
 
-    private lateinit var okHttpClient: OkHttpClient
-
-    @Singleton
-    @Provides
-    fun getOkHttpClient(): OkHttpClient {
-        okHttpClient = OkHttpClient()
-        return okHttpClient.newBuilder().addInterceptor { chain ->
-            val original = chain.request()
-            val httpUrl = original.url()
-            val newHttpUrl =
-                httpUrl.newBuilder().addQueryParameter("api_key", Constants.API_KEY).build()
-            val requestBuilder = original.newBuilder().url(newHttpUrl)
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }.build()
-    }
-
-    @Singleton
-    @Provides
-    fun getRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @Singleton
-    @Provides
-    fun getMovieDbApi(retrofit: Retrofit): MovieDbApi {
-        return retrofit.create(MovieDbApi::class.java)
-    }
-
     @Provides
     fun getFetchMovieListUseCase(movieDbApi: MovieDbApi): FetchMoviesListUseCase {
         return FetchMoviesListUseCase(movieDbApi)
