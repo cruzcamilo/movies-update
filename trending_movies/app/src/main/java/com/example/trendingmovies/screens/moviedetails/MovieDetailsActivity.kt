@@ -3,13 +3,13 @@ package com.example.trendingmovies.screens.moviedetails
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.example.trendingmovies.common.dependencyinjection.Service
 import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.MovieWithDetails
 import com.example.trendingmovies.screens.common.activities.BaseActivity
 import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
 import com.example.trendingmovies.screens.common.mvcviews.ViewMvcFactory
+import javax.inject.Inject
 
 class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
     FetchMovieDetailsUseCase.Listener {
@@ -17,9 +17,9 @@ class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
     private val mMovieId: Int by lazy {
     intent.extras!!.getInt(MOVIE_ID)
     }
-    @Service private lateinit var mDialogsManager: DialogsManager
-    @Service private lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMovieDetailsUseCase
-    @Service private lateinit var mViewMvcFactory: ViewMvcFactory
+    @Inject lateinit var mDialogsManager: DialogsManager
+    @Inject lateinit var mFetchMovieDetailsUseCaseUseCase: FetchMovieDetailsUseCase
+    @Inject lateinit var mViewMvcFactory: ViewMvcFactory
 
     private lateinit var mViewMvc: MovieDetailsViewMvc
 
@@ -35,7 +35,7 @@ class MovieDetailsActivity : BaseActivity(), MovieDetailsViewMvc.Listener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getInjector().inject(this)
+        getPresentationComponent().inject(this)
         mViewMvc = mViewMvcFactory.newInstance(MovieDetailsViewMvc::class, null)
         setContentView(mViewMvc.getRootView())
     }

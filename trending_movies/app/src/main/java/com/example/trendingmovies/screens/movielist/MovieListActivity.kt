@@ -1,8 +1,6 @@
 package com.example.trendingmovies.screens.movielist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import com.example.trendingmovies.common.dependencyinjection.Service
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
 import com.example.trendingmovies.movies.Movie
 import com.example.trendingmovies.screens.common.activities.BaseActivity
@@ -10,19 +8,20 @@ import com.example.trendingmovies.screens.common.dialogs.DialogsManager
 import com.example.trendingmovies.screens.common.dialogs.ServerErrorDialogFragment
 import com.example.trendingmovies.screens.common.mvcviews.ViewMvcFactory
 import com.example.trendingmovies.screens.moviedetails.MovieDetailsActivity
+import javax.inject.Inject
 
 class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
     FetchMoviesListUseCase.Listener {
 
-    @Service private lateinit var mDialogsManager: DialogsManager
-    @Service private lateinit var mFetchMoviesListUseCase: FetchMoviesListUseCase
-    @Service private lateinit var mViewMvcFactory: ViewMvcFactory
+    @Inject lateinit var mDialogsManager: DialogsManager
+    @Inject lateinit var mFetchMoviesListUseCase: FetchMoviesListUseCase
+    @Inject lateinit var mViewMvcFactory: ViewMvcFactory
 
     private lateinit var mViewMvc: MovieListViewMvc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getInjector().inject(this)
+        getPresentationComponent().inject(this)
 
         mViewMvc = mViewMvcFactory.newInstance(MovieListViewMvc::class, null)
 
