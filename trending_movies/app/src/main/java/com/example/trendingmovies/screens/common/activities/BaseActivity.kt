@@ -17,7 +17,8 @@ open class BaseActivity: AppCompatActivity() {
         }
         mIsInjectionUsed = true
         return DaggerPresentationComponent.builder()
-            .presentationModule(PresentationModule(this, getApplicationComponent()))
+            .presentationModule(PresentationModule(this))
+            .applicationComponent(getApplicationComponent())
             .build()
     }
 
