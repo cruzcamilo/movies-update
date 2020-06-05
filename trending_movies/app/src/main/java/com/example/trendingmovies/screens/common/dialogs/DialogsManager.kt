@@ -52,9 +52,8 @@ class DialogsManager (fragmentManager: FragmentManager){
         }
     }
 
-    fun showRetainedDialogWithId(dialog: DialogFragment, id: String?) {
+    fun showDialogWithId(dialog: DialogFragment, id: String?) {
         dismissCurrentlyShownDialog()
-        dialog.setRetainInstance(true)
         setId(dialog, id)
         showDialog(dialog)
     }

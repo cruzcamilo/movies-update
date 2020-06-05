@@ -50,6 +50,6 @@ class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
     }
 
     override fun onFetchOfMovieFailed() {
-        mDialogsManager.showRetainedDialogWithId(ServerErrorDialogFragment.newInstance(), "")
+        mDialogsManager.showDialogWithId(ServerErrorDialogFragment.newInstance(), "")
     }
 }
