@@ -1,5 +1,7 @@
 package com.example.trendingmovies.common.dependencyinjection.presentation
 
+import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -26,12 +28,17 @@ class PresentationModule(val activity: FragmentActivity) {
     fun getLayoutInflater(): LayoutInflater {return LayoutInflater.from(activity)}
 
     @Provides
-    fun getViewMvcFactory(): ViewMvcFactory {
-        return ViewMvcFactory(getLayoutInflater(), getImageLoader())
+    fun getActivity(): Activity {return activity}
+
+    @Provides fun context(activity: Activity): Context {return activity}
+
+    @Provides
+    fun getViewMvcFactory(layoutInflater: LayoutInflater, imageLoader: ImageLoader): ViewMvcFactory {
+        return ViewMvcFactory(layoutInflater, imageLoader)
     }
 
     @Provides
-    fun getImageLoader(): ImageLoader {return ImageLoader(activity)
+    fun getImageLoader(activity: Activity): ImageLoader {return ImageLoader(activity)
     }
 
     @Provides

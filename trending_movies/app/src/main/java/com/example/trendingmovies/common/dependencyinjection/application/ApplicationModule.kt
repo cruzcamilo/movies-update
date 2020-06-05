@@ -1,5 +1,6 @@
 package com.example.trendingmovies.common.dependencyinjection.application
 
+import android.app.Application
 import com.example.trendingmovies.Constants
 import com.example.trendingmovies.movies.FetchMovieDetailsUseCase
 import com.example.trendingmovies.movies.FetchMoviesListUseCase
@@ -12,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule {
+class ApplicationModule(val application: Application) {
 
     @Provides
     fun getFetchMovieListUseCase(movieDbApi: MovieDbApi): FetchMoviesListUseCase {
