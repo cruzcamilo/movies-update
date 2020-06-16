@@ -12,4 +12,7 @@ interface MovieDbApi {
 
     @GET("3/movie/{id}")
     fun movieDetails(@Path("id") movieId: Int): Call<MovieWithDetails>
+
+    @GET("3/movie/{id}/images")
+    fun moviePoster(@Path("id") movieId: Int): Call<PosterListResponseSchema>
 }

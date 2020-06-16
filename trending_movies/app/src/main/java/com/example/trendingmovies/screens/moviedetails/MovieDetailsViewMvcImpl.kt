@@ -6,6 +6,7 @@ import androidx.core.text.HtmlCompat
 import com.example.trendingmovies.Constants
 import com.example.trendingmovies.R
 import com.example.trendingmovies.movies.MovieWithDetails
+import com.example.trendingmovies.movies.Poster
 import com.example.trendingmovies.screens.common.ImageLoader
 import com.example.trendingmovies.screens.common.mvcviews.BaseViewMvc
 import kotlinx.android.synthetic.main.activity_movie_details.view.*
@@ -47,10 +48,12 @@ class MovieDetailsViewMvcImpl(
             imageLoader.loadImage(Constants.IMAGE_BASE_URL + movie.thumbnail,
                 imageLoader.getDefaultOptions(), rootView.poster_detail)
         }
+    }
 
-        if (!movie.backdrop.isNullOrEmpty()) {
-            imageLoader.loadImage(Constants.IMAGE_BASE_URL + movie.backdrop,
-                imageLoader.getDefaultOptions(), rootView.movie_detail_image)
+    override fun bindMoviePoster(posterList: List<Poster>) {
+        if(posterList.isNotEmpty()){
+            imageLoader.loadImage(Constants.POSTER_BASE_URL + posterList[0].path,
+                imageLoader.getMovieCoverImageOptions(), getRootView().movie_detail_image)
         }
     }
 }

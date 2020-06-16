@@ -14,6 +14,9 @@ class ImageLoader (val activity: Activity) {
         .override(540, 840)
         .centerCrop()
 
+    private val mCoverImageOptions: RequestOptions = RequestOptions()
+        .override(406, 228)
+
     fun loadImage(uri: String, options: RequestOptions, target: ImageView){
         Glide.with(activity).load(uri).apply(options).into(target)
     }
@@ -28,5 +31,9 @@ class ImageLoader (val activity: Activity) {
 
     fun getMoviePosterOptions(): RequestOptions{
         return movieListRequestOptions
+    }
+
+    fun getMovieCoverImageOptions(): RequestOptions{
+        return mCoverImageOptions
     }
 }

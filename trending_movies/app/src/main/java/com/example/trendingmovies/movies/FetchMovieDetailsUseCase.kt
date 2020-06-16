@@ -2,6 +2,7 @@ package com.example.trendingmovies.movies
 
 import com.example.trendingmovies.common.BaseObservable
 import com.example.trendingmovies.networking.MovieDbApi
+import com.example.trendingmovies.networking.PosterListResponseSchema
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -11,15 +12,18 @@ class FetchMovieDetailsUseCase(var movieDbApi: MovieDbApi): BaseObservable<Fetch
     interface Listener{
         fun onFetchOfMovieSucceeded(movie: MovieWithDetails)
         fun onFetchOfMovieFailed()
+        fun onFetchOfPosterSucceeded(posterList: List<Poster>)
+        fun onFetchOfPosterFailed()
     }
 
     private val mMovieDbApi: MovieDbApi = movieDbApi
-    private var mCall : Call<MovieWithDetails>? = null
+    private var mMovieCall : Call<MovieWithDetails>? = null
+    private var mPosterCall: Call<PosterListResponseSchema>? = null
 
     fun fetchLastMoviesAndNotify(movieId: Int){
         cancelCurrentFetchIfActive()
-        mCall = mMovieDbApi.movieDetails(movieId)
-        mCall?.enqueue(object : Callback<MovieWithDetails> {
+        mMovieCall = mMovieDbApi.movieDetails(movieId)
+        mMovieCall?.enqueue(object : Callback<MovieWithDetails> {
             override fun onResponse(
                 call: Call<MovieWithDetails>,
                 response: Response<MovieWithDetails>
@@ -33,11 +37,44 @@ class FetchMovieDetailsUseCase(var movieDbApi: MovieDbApi): BaseObservable<Fetch
                 notifyFailed()
             }
         })
+
+        mPosterCall = mMovieDbApi.moviePoster(movieId)
+        mPosterCall?.enqueue(object : Callback<PosterListResponseSchema>{
+
+            override fun onResponse(
+                call: Call<PosterListResponseSchema>,
+                response: Response<PosterListResponseSchema>
+            ) {
+                if(response.isSuccessful){
+                    posterNotifySucceeded(response.body()?.getPosters())
+                }
+            }
+
+            override fun onFailure(call: Call<PosterListResponseSchema>, t: Throwable) {
+                posterNotifyFailed()
+            }
+        })
     }
 
     private fun cancelCurrentFetchIfActive() {
-        if (mCall != null && !mCall!!.isCanceled && !mCall!!.isExecuted) {
-            mCall?.cancel()
+        if (mMovieCall != null && !mMovieCall!!.isCanceled && !mMovieCall!!.isExecuted) {
+            mMovieCall?.cancel()
+        }
+
+        if (mPosterCall != null && !mPosterCall!!.isCanceled && !mPosterCall!!.isExecuted) {
+            mPosterCall?.cancel()
+        }
+    }
+
+    private fun posterNotifySucceeded(posterList: List<Poster>?) {
+        for (listener in getListeners()) {
+            listener.onFetchOfPosterSucceeded(posterList!!)
+        }
+    }
+
+    private fun posterNotifyFailed() {
+        for (listener in getListeners()) {
+            listener.onFetchOfPosterFailed()
         }
     }
 
