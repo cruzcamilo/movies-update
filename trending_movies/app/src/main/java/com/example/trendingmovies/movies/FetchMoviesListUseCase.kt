@@ -18,9 +18,9 @@ class FetchMoviesListUseCase(var movieDbApi: MovieDbApi): BaseObservable<FetchMo
     private val mMovieDbApi: MovieDbApi = movieDbApi
     private var mCall: Call<MovieListResponseSchema>? = null
 
-    fun fetchLastMoviesAndNotify(){
+    fun fetchMoviesAndNotify(page: Int){
         cancelCurrentFetchIfActive()
-        mCall = mMovieDbApi.popularMoviesList()
+        mCall = mMovieDbApi.popularMoviesList(page)
         mCall?.enqueue(object : Callback<MovieListResponseSchema> {
             override fun onResponse(
                 call: Call<MovieListResponseSchema>,
@@ -45,11 +45,11 @@ class FetchMoviesListUseCase(var movieDbApi: MovieDbApi): BaseObservable<FetchMo
         }
     }
 
-    private fun notifySucceeded(questions: List<Movie>) {
-        val unmodifiableQuestions: List<Movie> =
-            Collections.unmodifiableList<Movie>(questions)
+    private fun notifySucceeded(movies: List<Movie>) {
+        val unmodifiableMovies: List<Movie> =
+            Collections.unmodifiableList(movies)
         for (listener in getListeners()) {
-            listener.onFetchOfMovieSucceeded(unmodifiableQuestions)
+            listener.onFetchOfMovieSucceeded(unmodifiableMovies)
         }
     }
 
@@ -58,5 +58,4 @@ class FetchMoviesListUseCase(var movieDbApi: MovieDbApi): BaseObservable<FetchMo
             listener.onFetchOfMovieFailed()
         }
     }
-
 }

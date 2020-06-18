@@ -8,13 +8,12 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.trendingmovies.Constants.IMAGE_BASE_URL
 import com.example.trendingmovies.R
 import com.example.trendingmovies.movies.Movie
 import com.example.trendingmovies.screens.common.ImageLoader
 import com.example.trendingmovies.screens.common.mvcviews.BaseViewMvc
+
 
 class MovieListViewMvcImpl(
     inflater: LayoutInflater,
@@ -27,6 +26,7 @@ class MovieListViewMvcImpl(
     private val emptyTextview: TextView
     private val mMoviesAdapter: MovieAdapter
     private val loadingSpinner: ProgressBar
+    private var pageNumber = 1
 
     init {
         setRootView(inflater.inflate(R.layout.activity_movie_list, container, false))
@@ -44,7 +44,15 @@ class MovieListViewMvcImpl(
 
 //        recyclerView.emptyView = emptyTextview
         recyclerView.adapter = mMoviesAdapter
-        recyclerView.layoutManager = GridLayoutManager(getContext(), 2)
+        val gridLayoutManager = GridLayoutManager(getContext(), 2)
+        recyclerView.layoutManager = gridLayoutManager
+        recyclerView.addOnScrollListener(object : EndlessRecyclerOnScrollListener(gridLayoutManager){
+            override fun onLoadMore(currentPage: Int) {
+                for (listener: MovieListViewMvc.Listener in getListeners()) {
+                    listener.getMoreMovies(currentPage)
+                }
+            }
+        })
     }
 
     override fun bindMovies(movies: List<Movie>) {
@@ -70,7 +78,7 @@ class MovieListViewMvcImpl(
         }
 
         fun bindData(movies: List<Movie>) {
-            mMovieList = ArrayList(movies)
+            mMovieList.addAll(movies)
             notifyDataSetChanged()
         }
 
@@ -84,7 +92,6 @@ class MovieListViewMvcImpl(
         override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
             holder.itemView.setOnClickListener {
                 mOnMovieClickListener.onMovieClicked(mMovieList[position])
-
             }
             imageLoader.loadImage(
                 IMAGE_BASE_URL + mMovieList[position].thumbnail,

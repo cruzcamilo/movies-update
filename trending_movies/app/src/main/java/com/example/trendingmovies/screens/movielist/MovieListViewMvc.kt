@@ -7,6 +7,7 @@ interface MovieListViewMvc: ObservableViewMvc<MovieListViewMvc.Listener> {
 
     interface Listener {
         fun onMovieClicked(movie: Movie)
+        fun getMoreMovies(page: Int)
     }
 
     fun bindMovies(movies: List<Movie>)

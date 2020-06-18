@@ -32,7 +32,7 @@ class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
         super.onStart()
         mViewMvc.registerListener(this)
         mFetchMoviesListUseCase.registerListener(this)
-        mFetchMoviesListUseCase.fetchLastMoviesAndNotify()
+        mFetchMoviesListUseCase.fetchMoviesAndNotify(1)
     }
 
     override fun onStop() {
@@ -47,6 +47,10 @@ class MovieListActivity : BaseActivity(), MovieListViewMvc.Listener,
 
     override fun onMovieClicked(movie: Movie) {
         MovieDetailsActivity.start(this@MovieListActivity, movie.id.toInt())
+    }
+
+    override fun getMoreMovies(page: Int) {
+        mFetchMoviesListUseCase.fetchMoviesAndNotify(page)
     }
 
     override fun onFetchOfMovieFailed() {
